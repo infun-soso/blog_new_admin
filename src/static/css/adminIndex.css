@@ -1,7 +1,7 @@
 .logo {
   height: 32px;
   background: url('../img/1.png') no-repeat;
-  background-size: 50% 100%;
-  background-position: 50% 0;
+  background-size: contain;
+  background-position: 50%;
   margin: 16px;
 }

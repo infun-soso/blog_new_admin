@@ -5,7 +5,9 @@ const servicePath = {
   getTypeInfo: ipUrl + 'getTypeInfo',
   saveArticle: ipUrl + 'addArticle',
   updateArticle: ipUrl + 'updateArticle',
-  getArticleList: ipUrl + 'getArticleList'
+  getArticleList: ipUrl + 'getArticleList',
+  delArticle: ipUrl + 'delArticle/',
+  getArticleById: ipUrl + 'getArticleById/',
 }
 
 export default servicePath

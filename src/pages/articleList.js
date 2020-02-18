@@ -28,22 +28,51 @@ function ArticleList(props){
   </Row>
 
   const [list,setList]=useState([])
+  const getArticleList = () => {
+    axios({
+      method: 'get',
+      url: servicePath.getArticleList,
+      withCredentials: true,
+      header:{ 'Access-Control-Allow-Origin':'*' }
+    }).then(
+      res => {
+        console.log(res)
+        setList(res.data.list)
+      }
+    )
+  }
+  
   useEffect(() => {
-    const getArticleList = () => {
-      axios({
-        method: 'get',
-        url: servicePath.getArticleList,
-        withCredentials: true,
-        header:{ 'Access-Control-Allow-Origin':'*' }
-      }).then(
-        res => {
-          console.log(res)
-          setList(res.data.list)
-        }
-      )
-    }
     getArticleList()
   }, [])
+
+  const handleDelArticle = (id) => {
+    console.log('删除')
+    confirm({
+      title: '确定要删除吗?',
+      content: '文章将会永远被删除，无法恢复。',
+      onOk() {
+        axios(servicePath.delArticle + id, { withCredentials: true })
+          .then(
+            res => {
+                console.log(res)
+                message.success('文章删除成功')
+                getArticleList()
+            }
+          )
+      },
+      onCancel() {
+        message.success('没有任何改变')
+      },
+    });
+  }
+
+  //修改文章
+  const updateArticle = (id, checked)=>{
+    console.log(id, 22)
+    props.history.push('/index/add/' + id)
+  }
+
   return (
     <div>
       <List
@@ -69,9 +98,9 @@ function ArticleList(props){
                 {item.view_count}
               </Col>
               <Col span={4}>
-                <Button type="primary" >修改</Button>&nbsp;
+                <Button type="primary" onClick={() => updateArticle(item.id)}>修改</Button>&nbsp;
 
-                <Button >删除 </Button>
+                <Button onClick={() => handleDelArticle(item.id)}>删除</Button>
               </Col>
             </Row>
           </List.Item>

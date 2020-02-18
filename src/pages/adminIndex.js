@@ -10,7 +10,7 @@ const { SubMenu } = Menu;
 
 
 function AdminIndex(props){
-
+  console.log(props, 111)
   const [collapsed,setCollapsed] = useState(false)
 
   const onCollapse = collapsed => {
@@ -30,14 +30,10 @@ function AdminIndex(props){
     <Layout style={{ minHeight: '100vh' }}>
       <Sider  collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <div className="logo"></div>
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+        <Menu theme="dark" defaultSelectedKeys={['3']} defaultOpenKeys={['sub1']} mode="inline">
           <Menu.Item key="1">
             <Icon type="pie-chart" />
             <span>工作台</span>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <Icon type="desktop" />
-            <span>添加文章</span>
           </Menu.Item>
           <SubMenu
             key="sub1"
@@ -69,8 +65,9 @@ function AdminIndex(props){
           </Breadcrumb>
           <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
           <div>
-            <Route path="/index/" exact component={AddArticle} />
-            <Route path="/index/list/" component={ArticleList} />
+            <Route path="/index/add/:id" component={AddArticle} />
+            <Route path="/index/add/" exact component={AddArticle} />
+            <Route path="/index/list" component={ArticleList} />
           </div>
           </div>
         </Content>
