@@ -55,10 +55,7 @@ function AddArticle(props) {
         withCredentials: true
       }).then(
         res => {
-          if (res.data === "没有登录") {
-            localStorage.removeItem('openId')
-            props.history.push('/login')  
-          } else {
+          if (res.code === 0) {
             setTypeInfo(res.data)
           }
         }

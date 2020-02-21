@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
-
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 const instance = axios.create({
   baseURL: '',
   timeout: 10000,
@@ -23,6 +23,12 @@ instance.interceptors.response.use(
     let { data, status } = res
     if (status === 200) {
       return data
+    }
+    if(data.data === '没有登录') {
+      message.error('没有登录', () => {
+        window.location.href = '/login'
+      })
+      localStorage.removeItem('openId')
     }
     message.error(status)
     return Promise.reject(data)
