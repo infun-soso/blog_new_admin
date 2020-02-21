@@ -36,7 +36,6 @@ function ArticleList(props){
       header:{ 'Access-Control-Allow-Origin':'*' }
     }).then(
       res => {
-        (res)
         setList(res.list)
       }
     )
