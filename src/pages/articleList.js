@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import '../static/css/articleList.css'
 import { List, Row, Col, Modal, message, Button, Switch} from 'antd';
-import axios from 'axios'
+import axios from '../api/request'
 import  servicePath  from '../config/apiUrl'
 const { confirm } = Modal;
 
@@ -36,8 +36,8 @@ function ArticleList(props){
       header:{ 'Access-Control-Allow-Origin':'*' }
     }).then(
       res => {
-        console.log(res)
-        setList(res.data.list)
+        (res)
+        setList(res.list)
       }
     )
   }
@@ -47,7 +47,6 @@ function ArticleList(props){
   }, [])
 
   const handleDelArticle = (id) => {
-    console.log('删除')
     confirm({
       title: '确定要删除吗?',
       content: '文章将会永远被删除，无法恢复。',
@@ -55,7 +54,6 @@ function ArticleList(props){
         axios(servicePath.delArticle + id, { withCredentials: true })
           .then(
             res => {
-                console.log(res)
                 message.success('文章删除成功')
                 getArticleList()
             }
@@ -69,7 +67,6 @@ function ArticleList(props){
 
   //修改文章
   const updateArticle = (id, checked)=>{
-    console.log(id, 22)
     props.history.push('/index/add/' + id)
   }
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Input, Icon, Button, Spin, message } from 'antd'
 import '../static/css/login.css';
-import axios from 'axios'
 import servicePath from '../config/apiUrl'
+import axios from '../api/request'
 
 function Login(props) {
 
@@ -26,10 +26,11 @@ function Login(props) {
       method: 'post',
       url: servicePath.checkLogin,
       data: dataProps,
+      withCredentials: true
     }).then(
       res => {
         setIsLoading(false)
-        if (!res.data.code) {
+        if (!res.code) {
           localStorage.setItem('openId', res.data.openId)
           props.history.push('/index')
         } else {
@@ -56,10 +57,10 @@ function Login(props) {
     }).then(
       res => {
         setIsLoading(false)
-        if (!res.data.code) {
+        if (!res.code) {
           message.success('注册成功，快去登录吧')
         } else {
-          message.error(res.data.data)
+          message.error(res.data)
         }
       }
     )

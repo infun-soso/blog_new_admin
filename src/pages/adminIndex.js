@@ -40,7 +40,6 @@ function AdminIndex(props){
   };
 
   const handleClickArticle = (e) => {
-    console.log(e)
     routerMap.forEach((item) => {
       if (e.key === item.key) props.history.push(item.route)
     })

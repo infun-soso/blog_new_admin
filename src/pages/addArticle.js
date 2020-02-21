@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import marked from 'marked';
 import '../static/css/addArticle.css'
 import { Row, Col, Input, Select, Button, DatePicker, message } from 'antd';
-import axios from 'axios';
+import axios from '../api/request';
 import servicePath from '../config/apiUrl';
 import moment from 'moment'
 
@@ -47,7 +47,7 @@ function AddArticle(props) {
   useEffect(() => {
     const getTypeInfo = () => {
       axios({
-        method: 'get',
+        method: 'GET',
         url: servicePath.getTypeInfo,
         header: {
           'Access-Control-Allow-Origin':'*'
@@ -55,11 +55,11 @@ function AddArticle(props) {
         withCredentials: true
       }).then(
         res => {
-          if (res.data.data === "没有登录") {
+          if (res.data === "没有登录") {
             localStorage.removeItem('openId')
             props.history.push('/login')  
           } else {
-            setTypeInfo(res.data.data)
+            setTypeInfo(res.data)
           }
         }
       )
@@ -71,16 +71,16 @@ function AddArticle(props) {
         header:{ 'Access-Control-Allow-Origin': '*' }
       }).then(
         res=>{
-          //let articleInfo= res.data.data[0]
-          let html = marked(res.data.data[0].article_content)
-          let tmpInt = marked(res.data.data[0].introduce)
-          setArticleTitle(res.data.data[0].title)
-          setArticleContent(res.data.data[0].article_content)
+          //let articleInfo= res.data[0]
+          let html = marked(res.data[0].article_content)
+          let tmpInt = marked(res.data[0].introduce)
+          setArticleTitle(res.data[0].title)
+          setArticleContent(res.data[0].article_content)
           setMarkdownContent(html)
-          setIntroducemd(res.data.data[0].introduce)
+          setIntroducemd(res.data[0].introduce)
           setIntroducehtml(tmpInt)
-          setShowDate(res.data.data[0].addTime)
-          setSelectType(res.data.data[0].typeId)
+          setShowDate(res.data[0].addTime)
+          setSelectType(res.data[0].typeId)
         }
       )
     }
@@ -109,7 +109,6 @@ function AddArticle(props) {
         message.error('发布日期不能为空')
         return false
     }
-    message.success('检验通过')
 
     let dataProps = {}
     dataProps.type_id = selectedType 
@@ -129,17 +128,14 @@ function AddArticle(props) {
         withCredentials: true
       }).then(
         res => {
-          console.log(res)
-          setArticleId(res.data.data.insertId)
-          if (res.data.code === 0) {
+          setArticleId(res.data.insertId)
+          if (res.code === 0) {
             message.success('文章保存成功')
           } else {
             message.error('文章保存失败')
           }
         }
-      ).catch((...rest) => {
-        console.log(rest)
-      })
+      )
     } else {
       dataProps.id = articleId 
       axios({
@@ -150,7 +146,7 @@ function AddArticle(props) {
           withCredentials: true
       }).then(
           res=>{
-            if(res.data.code === 0){
+            if(res.code === 0){
                 message.success('文章修改成功')
             }else{
                 message.error('保存失败');

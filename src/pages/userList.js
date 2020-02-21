@@ -29,7 +29,6 @@ const UserList = () => {
       header:{ 'Access-Control-Allow-Origin':'*' }
     }).then(
       res => {
-        console.log(res)
         setList(res.data.list)
       }
     )
