@@ -1,7 +1,37 @@
-
+#root {
+  height: 100%;
+}
+.bg {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #2c3e50; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #2c3e50, #4ca1af); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #2c3e50, #4ca1af); 
+}
 .login-div{
   margin: 150px auto;
   width: 400px;
+  background-color: transparent;
+}
+.login-div .ant-card {
+  background: transparent;
+}
+.login-div .ant-card-head {
+  color: #ffffff;
+  border: none;
+  font-size: 30px;
+}
+.login-div .ant-input {
+  background-color: transparent;
+  color: #ffffff;
+}
+.login-div .ant-input-password-icon {
+  color: rgb(255, 255, 255, .75);
+}
+.sign-up span {
+  text-decoration: underline;
+  font-weight: 500;
 }
 body{
   background-color: #f0f0f0;

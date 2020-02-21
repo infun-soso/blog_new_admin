@@ -1,16 +1,38 @@
 import React,{useState} from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Route } from 'react-router-dom';
+
 import AddArticle from './addArticle'
 import ArticleList from './articleList'
+import UserList from './userList'
+import WorkPlace from './workPlace'
+
 import '../static/css/adminIndex.css'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
+const routerMap = [
+  {
+    key: '3',
+    route: '/index/add'
+  },
+  {
+    key: '4',
+    route: '/index/list'
+  },
+  {
+    key: '1',
+    name: '工作台',
+    route: '/index/workPlace'
+  },
+  {
+    key: '9',
+    route: '/index/users'
+  },
+]
 
 function AdminIndex(props){
-  console.log(props, 111)
   const [collapsed,setCollapsed] = useState(false)
 
   const onCollapse = collapsed => {
@@ -19,28 +41,25 @@ function AdminIndex(props){
 
   const handleClickArticle = (e) => {
     console.log(e)
-    if (e.key === '3') {
-      props.history.push('/index/add')
-    } else {
-      props.history.push('/index/list')
-    }
+    routerMap.forEach((item) => {
+      if (e.key === item.key) props.history.push(item.route)
+    })
   }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider  collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <div className="logo"></div>
-        <Menu theme="dark" defaultSelectedKeys={['3']} defaultOpenKeys={['sub1']} mode="inline">
+        <Menu onClick={handleClickArticle} theme="dark" defaultSelectedKeys={['3']} defaultOpenKeys={['sub1']} mode="inline" >
           <Menu.Item key="1">
             <Icon type="pie-chart" />
             <span>工作台</span>
           </Menu.Item>
           <SubMenu
             key="sub1"
-            onClick={handleClickArticle}
             title={
               <span>
-                <Icon type="user" />
+                <Icon type="file" />
                 <span>文章管理</span>
               </span>
             }
@@ -51,8 +70,8 @@ function AdminIndex(props){
           </SubMenu>
 
           <Menu.Item key="9">
-            <Icon type="file" />
-            <span>留言管理</span>
+            <Icon type="user" />
+            <span>用户列表</span>
           </Menu.Item>
         </Menu>
       </Sider>
@@ -68,6 +87,8 @@ function AdminIndex(props){
             <Route path="/index/add/:id" component={AddArticle} />
             <Route path="/index/add/" exact component={AddArticle} />
             <Route path="/index/list" component={ArticleList} />
+            <Route path="/index/users" component={UserList} />
+            <Route path="/index/workPlace" component={WorkPlace} />
           </div>
           </div>
         </Content>

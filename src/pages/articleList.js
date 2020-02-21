@@ -27,7 +27,7 @@ function ArticleList(props){
     </Col>
   </Row>
 
-  const [list,setList]=useState([])
+  const [list,setList] = useState([])
   const getArticleList = () => {
     axios({
       method: 'get',
