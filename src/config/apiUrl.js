@@ -9,7 +9,8 @@ const servicePath = {
   delArticle: ipUrl + 'delArticle/',
   getArticleById: ipUrl + 'getArticleById/',
   signUp: ipUrl + 'signUp',
-  getUserList: ipUrl + 'getUserList'
+  getUserList: ipUrl + 'getUserList',
+  getUploadToken: ipUrl + 'getUploadToken',
 }
 
 export default servicePath

@@ -21,15 +21,16 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   res => {
     let { data, status } = res
-    if (status === 200) {
-      return data
-    }
     if(data.data === '没有登录') {
       message.error('没有登录', () => {
         window.location.href = '/login'
       })
       localStorage.removeItem('openId')
     }
+    if (status === 200) {
+      return data
+    }
+    
     message.error(status)
     return Promise.reject(data)
   },
