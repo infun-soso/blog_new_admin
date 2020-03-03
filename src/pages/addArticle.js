@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import marked from 'marked';
+import BraftEditor from 'braft-editor'
+import 'braft-editor/dist/index.css'
 import '../static/css/addArticle.css'
 import { Row, Col, Input, Select, Button, DatePicker, message, Upload, Icon } from 'antd';
 import axios from '../api/request';
@@ -26,8 +28,8 @@ marked.setOptions({
 function AddArticle(props) {
   const [articleId, setArticleId] = useState(props.match.params.id || 0)  // 文章的ID，如果是0说明是新增加，如果不是0，说明是修改
   const [articleTitle, setArticleTitle] = useState('')   //文章标题
-  const [articleContent, setArticleContent] = useState('')  //markdown的编辑内容
-  const [markdownContent, setMarkdownContent] = useState('预览内容') //html内容
+  // const [articleContent, setArticleContent] = useState('')  //markdown的编辑内容
+  // const [markdownContent, setMarkdownContent] = useState('预览内容') //html内容
   const [introducemd, setIntroducemd] = useState()            //简介的markdown内容
   const [introducehtml, setIntroducehtml] = useState('等待编辑') //简介的html内容
   const [showDate, setShowDate] = useState(moment().format('YYYY-MM-DD'))   //发布日期
@@ -36,6 +38,7 @@ function AddArticle(props) {
   const [selectedType, setSelectType] = useState(2) //选择的文章类别
   const [uploadToken, setUploadToken] = useState('') //选择的文章类别
   const [coverUrl, setCoverUrl] = useState('') //选择的文章类别
+  const [editorState, setEditorState] = useState(BraftEditor.createEditorState(null)) //选择的文章类别
 
 
   const config = {
@@ -86,11 +89,11 @@ function AddArticle(props) {
     },
   };
 
-  const changeContent = (e)=>{
-    setArticleContent(e.target.value)
-    let html = marked(e.target.value)
-    setMarkdownContent(html)
-  }
+  // const changeContent = (e)=>{
+  //   setArticleContent(e.target.value)
+  //   let html = marked(e.target.value)
+  //   setMarkdownContent(html)
+  // }
 
   const changeIntroduce = (e)=>{
     setIntroducemd(e.target.value)
@@ -123,11 +126,12 @@ function AddArticle(props) {
       }).then(
         res=>{
           //let articleInfo= res.data[0]
-          let html = marked(res.data[0].article_content)
+          // let html = marked(res.data[0].article_content)
           let tmpInt = marked(res.data[0].introduce)
           setArticleTitle(res.data[0].title)
-          setArticleContent(res.data[0].article_content)
-          setMarkdownContent(html)
+          // setArticleContent(res.data[0].article_content)
+          // setMarkdownContent(html)
+          setEditorState(BraftEditor.createEditorState(res.data[0].article_content))
           setIntroducemd(res.data[0].introduce)
           setIntroducehtml(tmpInt)
           setShowDate(res.data[0].addTime)
@@ -150,7 +154,7 @@ function AddArticle(props) {
     }else if(!articleTitle){
         message.error('文章名称不能为空')
         return false
-    }else if(!articleContent){
+    }else if(!editorState.toHTML()){
         message.error('文章内容不能为空')
         return false
     }else if(!introducemd){
@@ -164,9 +168,9 @@ function AddArticle(props) {
     let dataProps = {}
     dataProps.type_id = selectedType 
     dataProps.title = articleTitle
-    dataProps.article_content = articleContent
+    dataProps.article_content = editorState.toHTML()
     dataProps.introduce = introducemd
-    dataProps.cover_url = `http://pic.wyfs.top/${coverUrl}`
+    dataProps.cover_url = coverUrl ? `http://pic.wyfs.top/${coverUrl}` : ''
 
     let datetext = showDate
     dataProps.addTime = (new Date(datetext).getTime()) / 1000
@@ -224,7 +228,13 @@ function AddArticle(props) {
       }
     )
   }
-
+  // const submitContent = async () => {
+  //   // 在编辑器获得焦点时按下ctrl+s会执行此方法
+  //   // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
+  //   const htmlContent = editorState.toHTML()
+  //   console.log(htmlContent)
+  //   // const result = await saveEditorContent(htmlContent)
+  // }
   return (
     <div>
       <Row gutter={5}>
@@ -250,22 +260,20 @@ function AddArticle(props) {
           </Row>
           <br/>
           <Row gutter={10} >
-            <Col span={12}>
-              <TextArea
+            <Col span={24}>
+              {/* <TextArea
                   value={articleContent}
                   className="markdown-content" 
                   rows={35}  
                   placeholder="文章内容"
                   onChange={changeContent}
                   onPressEnter={changeContent}
-                  />
-            </Col>
-            <Col span={12}>
-              <div 
-                className="show-html"
-                dangerouslySetInnerHTML={{__html: markdownContent}}
-                >
-              </div>
+                  /> */}
+              <BraftEditor
+                value={editorState}
+                onChange={(e) => setEditorState(e)}
+                // onSave={submitContent}
+              /> 
             </Col>
           </Row>  
         </Col>

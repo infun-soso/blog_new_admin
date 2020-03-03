@@ -12,6 +12,11 @@
   overflow: auto;
 }
 
+.bf-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .show-html h1{
   font-size:30px;
 }

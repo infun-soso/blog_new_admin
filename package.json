@@ -9,6 +9,7 @@
     "antd": "^3.26.11",
     "axios": "^0.19.2",
     "babel-plugin-import": "^1.13.0",
+    "braft-editor": "^2.3.9",
     "customize-cra": "^0.9.1",
     "marked": "^0.8.0",
     "md5": "^2.2.1",
